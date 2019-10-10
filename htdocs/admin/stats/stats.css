@@ -1,0 +1,29 @@
+#awstats-wrap .aws_bodyl  { }
+#awstats-wrap .aws_border { border-collapse: collapse; background-color: #CCCCDD; padding: 1px 1px 1px 1px; margin-top: 0px; margin-bottom: 0px; }
+#awstats-wrap .aws_title  { font: 13px verdana, arial, helvetica, sans-serif; font-weight: bold; background-color: #CCCCDD; text-align: center; margin-top: 0; margin-bottom: 0; padding: 1px 1px 1px 1px; color: #000000; }
+#awstats-wrap .aws_blank  { font: 13px verdana, arial, helvetica, sans-serif; background-color: #FFFFFF; text-align: center; margin-bottom: 0; padding: 1px 1px 1px 1px; }
+#awstats-wrap .aws_data {
+background-color: #FFFFFF;
+border-top-width: 1px;   
+border-left-width: 0px;  
+border-right-width: 0px; 
+border-bottom-width: 0px;
+}
+#awstats-wrap .aws_formfield { font: 13px verdana, arial, helvetica; }
+#awstats-wrap .aws_button {
+font-family: arial,verdana,helvetica, sans-serif;
+font-size: 12px;
+border: 1px solid #ccd7e0;
+background-image : url(/icon/other/button.gif);
+}
+#awstats-wrap th		{ border-color: #ECECEC; border-left-width: 0px; border-right-width: 1px; border-top-width: 0px; border-bottom-width: 1px; padding: 1px 2px 1px 1px; font: 11px verdana, arial, helvetica, sans-serif; text-align:center; color: #000000; }
+#awstats-wrap th.aws	{ border-color: #ECECEC; border-left-width: 0px; border-right-width: 1px; border-top-width: 0px; border-bottom-width: 1px; padding: 1px 2px 1px 1px; font-size: 13px; font-weight: bold; }
+#awstats-wrap td		{ border-color: #ECECEC; border-left-width: 0px; border-right-width: 1px; border-top-width: 0px; border-bottom-width: 1px; font: 11px verdana, arial, helvetica, sans-serif; text-align:center; color: #000000; }
+#awstats-wrap td.aws	{ border-color: #ECECEC; border-left-width: 0px; border-right-width: 1px; border-top-width: 0px; border-bottom-width: 1px; font: 11px verdana, arial, helvetica, sans-serif; text-align:left; color: #000000; padding: 0px;}
+#awstats-wrap td.awsm	{ border-left-width: 0px; border-right-width: 0px; border-top-width: 0px; border-bottom-width: 0px; font: 11px verdana, arial, helvetica, sans-serif; text-align:left; color: #000000; padding: 0px; }
+#awstats-wrap b { font-weight: bold; }
+#awstats-wrap a { font: 11px verdana, arial, helvetica, sans-serif; }
+#awstats-wrap a:link    { color: #0011BB; text-decoration: none; }
+#awstats-wrap a:visited { color: #0011BB; text-decoration: none; }
+#awstats-wrap a:hover   { color: #605040; text-decoration: underline; }
+#awstats-wrap .currentday { font-weight: bold; }

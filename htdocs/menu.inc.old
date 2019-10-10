@@ -1,0 +1,41 @@
+<?
+$menu = array(
+	'Home' => '/index.php',
+	'How to find us' => '/map.php',
+	'Contact' => '/contact.php',
+	'Webcam' => '/webcam.php',
+	'Pictures' => '/gallery/',
+	'Guestbook' => '/guestbook/gbook.php'
+);
+?>
+
+<table class="menu" style="margin: 0px;">
+<?
+foreach ($menu as $name => $page) {
+	if ($_SERVER['PHP_SELF'] == $page) {
+		?><tr><td class="menusel"><?=$name?></td></tr>
+<?
+	} else {
+		?><tr><td class="menuopt" onClick="document.location='<?=$page?>';"><?=$name?></td></tr>
+<?
+	}
+	?><tr><td class="menuspace"></td></tr>
+<?
+}
+?>
+<tr><td style="height: 100%;"></td></tr>
+</table>
+
+<script language="javascript">
+
+// schedule first update at 12:01 (server time)
+setTimeout('updateBirthdays();', <?=(1000 * (strtotime('tomorrow') - time() + 60))?>);
+
+function updateBirthdays() {
+	updateAjax('birthdays', 'birthdayMenu.php');
+	// schedule next update in 1 day (client keeps track of time)
+	setTimeout('updateBirthdays();', 86400000);
+}
+
+</script>
+<div id="birthdays"><?include('birthdayMenu.php');?></div>

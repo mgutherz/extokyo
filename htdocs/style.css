@@ -1,0 +1,96 @@
+html, body { background-color: #000000; color: #ffffff; margin: 0px; height: 100%; font-family: Arial; font-size: 12px; }
+table { border-collapse: collapse; border-spacing: 0px; padding: 0px; border: 1px none #ffffff; }
+td { border: 1px none #cfcfcf; }
+img { border: 0px none #00ff00; }
+a { text-decoration: none; color: #ffffff; }
+
+/* progress bar colors */
+div#pb1 { background-color: #ffcc00; height: 100%; display: inline-block; width:100%;}
+div#pb2 { background-color: #ff0000; height: 100%; display: inline-block; width:0%;}
+
+.boxNote { border: solid 1px #ffffff; text-align: left; font-family: monospace; font-size: 14px; white-space: nowrap; padding: 10px;}
+
+#cameraImage, #controls, #progressBar { margin-top: 5px; margin-bottom: 5px;}
+div.stats { font-size: 12px; font-weight: bold; color: #ffffff; font-family: Arial; }
+div.stats .highlight { color: #ff0000; display: inline;}
+.selectedButton { background-color: #ffcc00; color: #ff0000; }
+.button { background-color: #ff0000; color: #ffcc00; }
+
+table.flag { border-spacing: 0px; border-collapse: collapse;  }
+table.flag td { font-weight: bold; }
+table.flag tr { border: 1px solid #909090; }
+
+/* IE8 doesn't support nth-child()
+table.flag tr:nth-child(1) { background-color: #000000; border-bottom: none; }
+table.flag tr:nth-child(2) { background-color: #ff0000; border-top: none; border-bottom: none; }
+table.flag tr:nth-child(3) { background-color: #ffcc00; border-top: none; }
+*/
+
+/* This is a workaround for IE8: */
+table.flag tr:first-child { background-color: #000000; border-bottom: none; }
+table.flag tr:first-child + tr { background-color: #ff0000; border-top: none; border-bottom: none; }
+table.flag tr:first-child + tr + tr { background-color: #ffcc00; border-top: none; }
+
+table.smallflag { height: 108px; width: 180px; font-size: 12px; }
+table.smallflag td { padding-left: 10%; }
+
+table.bigflag { height: 390px; width: 650px; font-size: 58px; }
+table.bigflag td div { text-align: center; position: relative; }
+
+/*
+table.bigflag tr:first-child { bottom: 1000px; }
+table.bigflag tr:first-child + tr { bottom: 2000px; }
+table.bigflag tr:first-child + tr + tr { bottom: 3000px; }
+*/
+
+/*
+ * td.bigflagrow { font-size: 45pt; text-align: center; font-weight: bold;}
+td.smallflagrow { font-size: 12px; text-align: left; font-weight: bold;}
+*/
+
+/* vertical menu */
+table.menu-v { width: 160px; }
+table.menu-v td { font-size: 16px; font-weight: bold; background-color: #ff0000; color: #ffffff; height: 30px;  padding-left: 10px;  width: 100%; border-spacing: 10px; border-bottom: 10px solid black; white-space: nowrap;}
+table.menu-v td#selected { background-color: #ffcc00; background-image: url(hoversel.png); background-size: 100% 100%; cursor: auto; color: black;}
+table.menu-v td:hover { background-image: url(hoveropt.png); cursor: pointer; }
+
+/* horizontal menu */
+table.menu-h { display: inline-block;}
+table.menu-h td { font-size: 16px; font-weight: bold; background-color: #ff0000; color: #ffffff; height: 30px;  padding-left: 10px;  padding-right: 10px; border-spacing: 10px; border-right: 10px solid black; white-space: nowrap;}
+table.menu-h td#selected { background-color: #ffcc00; background-image: url(hoversel.png); background-size: 100% 100%; cursor: auto; color: black;}
+table.menu-h td:hover { background-image: url(hoveropt.png); background-size: 100% 100%; cursor: pointer; }
+
+
+div#birthdayCheers { background-image: url(new_fireworks.gif); background-size: 100%; background-position: center top; background-repeat: no-repeat; text-align: center; font-weight: bold; font-style: italic; font-family: Serif; font-size: 14px; }
+
+
+/*
+td.menusel:hover { background-image: url(hoversel.png); }
+*/
+
+.cheer {font-family:Bookman Old Style, Times New Roman; text-align:center; font-weight: bold; font-style: italic; }
+.white {color: #ffffff;}
+.red {color: #ff0000;}
+.yellow {color: #ffcc00;}
+.small { font-size: 10px; }
+.center { text-align: center; }
+
+.title {font-size: 16px; text-decoration: underline; margin: 20px; }
+
+
+.config { margin: 50px; background-color: #202020; text-align: center;}
+
+
+table#bdayList { border: 1px solid white; margin: 10px; margin-left: auto; margin-right: auto; }
+table#bdayList img.photo { height: 8em;}
+table#bdayList td,th { border: 1px solid white; padding: 5px; font-size: 1.15em; }
+
+.controls { display: inline-block; font-weight: bold; padding: 10px; font-size: 1.25em; }
+table.controls { border: 1px solid white; }
+table.controls td { padding: 5px; }
+.controls a { text-decoration: underline; }
+
+table#camPos { border-collapse: separate; border-spacing: 10px; width: 100%;}
+table#camPos td { font-size: 14px; font-weight: bold; background-color: #ff0000; color: #ffffff; border-top: 2px solid white; border-left: 2px solid white; border-right: 2px solid gray; border-bottom: 2px solid gray; text-align: center; }
+/* make the whole cell clickable */
+table#camPos td a { display: block;  width: 100%; height: 30px; line-height: 2em;}

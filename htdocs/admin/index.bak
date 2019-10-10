@@ -1,0 +1,222 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+	<meta http-equiv="Expires" content="Mon, Nov 1 2004 08:20:00 GMT" />
+	<meta http-equiv="Pragma" content="no-cache" />
+	<meta http-equiv="Cache-Control" content="no-cache" />
+	<script language="javascript" type="text/javascript" src="js/displayTodaysTime.js"></script>
+	<title>EX German Snack Bar</title>
+<style type="text/css">
+style1 {color: #FFFFFF;}
+td.bar1 { background-color: #ffcc00; width: 4; height: 20;}
+td.bar2 { background-color: #ff0000; width: 4; height: 20; }
+.button { background-color: #ff0000; color: #000000; }
+.selectedButton { background-color: #ffcc00; color: #000000; }
+.datetime { font-size: 8px; font-weight: bold; color: #ffffff; }
+</style>
+<script language="javascript" type="text/javascript">
+var positions; // array of positions
+var defaultPosition = 0; // default initial position
+var pos = defaultPosition; // current position
+var barsize = 160; // progressbar size
+var barpos = barsize; // current progressbar position
+var progressBar; // progressbar
+var controls; // position controls
+var datetime;
+var dayNames = new Array('Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday');
+var monthNames = new Array('January','February','March','April','May','June','July','August','September','October','November','December');
+var updateBarInterval = 75; // in microseconds
+var cam = new Image;
+var seq = 0;
+
+function updateProgressBar() {
+	if (--barpos < 0) {
+		barpos = barsize;
+		document.getElementById('image').src='/cameraimage.jpg?seq='+(++seq);
+	}
+	
+	var tmp='<table cellpadding="0" cellspacing="0" border="0"><tr>';
+	for (var i = 0; i<barsize; i++) {
+		tmp+='<td id="progressBar'+i+'" class="'+((i<barpos)?'bar1':'bar2')+'"></td>';
+	}
+	progressBar.innerHTML=tmp+'</tr></table>';
+//	document.getElementById('progressBar0').innerHTML='<div style="font-size: 16px; color: #000000; text-align: center;">'+barpos+'</div>';
+}
+
+function renderControls() {
+	var tmp = '<table cellpadding="0" cellspacing="4" border="0"><tr>';
+	for (var i=0; i<positions.length; i++) {
+		tmp += '<td><input id="positionButton'+i+'" class="'+(i==pos?'selectedButton':'button')+'" type="button" onClick="setPosition('+i+');" value="'+positions[i][4]+'" /></td>';
+	}
+	tmp+='</tr></table>';
+	controls.innerHTML=tmp;
+}
+
+// set a defined position
+function setPosition(newpos) {
+	document.getElementById('positionButton'+pos).setAttribute('class', 'button');
+	document.getElementById('positionButton'+pos).setAttribute('className', 'button');
+	pos=newpos;
+	document.getElementById('positionButton'+pos).setAttribute('class', 'selectedButton');
+	document.getElementById('positionButton'+pos).setAttribute('className', 'selectedButton');
+	cam.src='http://172.16.231.237/-wvhttp-01-/still.jpg?'+(++seq)+'&pan='+positions[pos][0]+'&tilt='+positions[pos][1]+'&z='+positions[pos][2]+'&b='+positions[pos][3];
+	// workaround for a zooming bug in the camera
+//	cam.src='http://172.16.231.237/-wvhttp-01-/still.jpg?seq='+(++seq)+'&zoom='+(positions[pos][2]-2);
+//	cam.src='http://172.16.231.237/-wvhttp-01-/still.jpg?seq='+(++seq)+'&zoom='+(positions[pos][2]+2);
+//	cam.src='http://172.16.231.237/-wvhttp-01-/still.jpg?seq='+(++seq)+'&zoom='+(positions[pos][2]);
+}
+
+function loadServerPositions() {
+	var xmlHttp;
+	try {
+		// Firefox, Opera 8.0+, Safari
+		xmlHttp=new XMLHttpRequest();
+	} catch (e) {
+		// Internet Explorer
+		try {
+			xmlHttp=new ActiveXObject('Msxml2.XMLHTTP');
+		} catch (e) {
+			try {
+				xmlHttp=new ActiveXObject('Microsoft.XMLHTTP');
+			} catch (e) {
+				alert('Your browser is not supported');
+				return false;
+			}
+		}
+	}
+	xmlHttp.onreadystatechange=function() {
+		if(xmlHttp.readyState==4) {
+			if (xmlHttp.status == 200) {
+				eval(xmlHttp.responseText);
+			} else {
+				alert('Error loading positions. Status: '+xmlHttp.status);
+			}
+			renderControls();
+			setPosition(pos);
+		}
+	}
+	xmlHttp.open('GET', 'positions.txt?'+(++seq)+'&rnd='+Math.random(), true);
+	xmlHttp.send(null);
+}
+
+function init() {
+	loadServerPositions();
+	progressBar = document.getElementById('progressBar');
+	controls = document.getElementById('controls');
+	datetime = document.getElementById('datetime');
+	setInterval("updateProgressBar();", updateBarInterval);
+	setInterval("updateDateTime();", 1000);
+}
+
+function updateDateTime() {
+	var date = new Date();
+ 	datetime.innerHTML = dayNames[date.getDay()]+' '+date.getDate()+'. '+monthNames[date.getMonth()]+' '+(date.getYear()+1900)+' '+date.getHours()+':'+(date.getMinutes()<10?'0':'')+date.getMinutes()+':'+(date.getSeconds()<10?'0':'')+date.getSeconds();
+}
+
+</script>
+</head>
+<body onLoad="init();" topmargin="10" leftmargin="10" scroll="yes" alink="#0099ff" bgcolor="#000000" link="#0099ff" marginheight="0" marginwidth="0" text="#ffffff" vlink="#0099ff">
+<table style="width: 955px; height: 580px; border-collapse: collapse;" border="0" cellpadding="0" cellspacing="0">
+	<tr>
+	<td height="140" width="266">
+		<table style="border-collapse: collapse;" border="1" cellpadding="0" cellspacing="0" height="120" width="260">
+			<tr><td bgcolor="#000000" height="40"><b><font color="#ffffff" face="Arial" size="6">&nbsp;EX</font></b></td></tr>
+			<tr><td bgcolor="#ff0000" height="40">&nbsp;</td></tr>
+			<tr><td bgcolor="#ffcc00" height="40"><b><font color="#ffffff" face="Arial" size="5">&nbsp;German Snack Bar</font></b></td></tr>
+		</table>
+	</td>
+      <td rowspan="3" height="580" valign="top" width="689">
+      <div align="center">
+	<div id="datetime" class="datetime"></div>
+      <img id="image" src="/cameraimage.jpg" name="cameraimage" border="0" />
+      <div id="progressBar" align="center"></div>
+      <font color="#ffffff" face="Arial"><br>
+      <br>
+      </font>
+      <div id="controls" align="center"></div>
+      <font color="#ffffff" face="Arial"><br>
+      <font color="#ff0000" face="Arial"> </font></font>
+      <p style="margin-top: 0pt; margin-bottom: 0pt;" align="right"><font color="#ffffff" face="Arial"><font color="#ff0000" face="Arial"><font size="1"> 
+	<a style="text-decoration: none;" href="http://www.ex-tokyo.com/countries.html" target="_new"> 
+	<font color="#ff0000">&gt;CLICK HERE FOR STATISTICS&lt;</font></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></font> </font>
+      </p>
+      </td>
+    </tr>
+ <tr>
+      <td style="width: 266px; vertical-align: top;">
+      <p style="margin-top: 0pt; margin-bottom: 10px;" align="left"> </p>
+      <div> <map id="menu" name="menu">
+      <area shape="rect" coords="-1,-1,149,29" href="ex.htm" title="Main Page">
+      <area shape="rect" coords="-1,39,149,70" href="map.htm" title="Map">
+      <area shape="rect" coords="-1,79,149,111" href="contact.htm" title="Contact Us">
+      <area shape="rect" coords="-1,159,149,193" href="/gallery/albums.php" title="Gallery">
+      <area shape="rect" coords="-1,199,149,230" href="/guestbook/gbook.php" title="Guestbook">
+      <area shape="default" nohref="nohref" alt="">
+      </map>
+      <img src="menu.gif" usemap="#menu" border="0">
+      <p></p>
+      </div>
+      </td>
+    </tr>
+<td valign="top" height="250" width="260">
+</td>
+</table>
+
+<!-- Picture +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++  -->
+<td valign="top" height="250" width="260">
+
+                                <div style="position:absolute; top:420px; left:20px; z-index:1;">
+                                        <img src="fireworks_1.gif" width="100" height="100">
+                                </div>
+
+                                <div style="position:absolute; top:490px; left:120px; z-index:2;">
+                                        <img src="fireworks_3.gif" width="128" height="128">
+                                </div>
+
+
+ <div style="position:absolute; top:440px; left:5px; z-index:3; font-family:Bookman Old Style, Times New Roman; text-align:center;">
+<br>
+<font color="#FF0000" size="3"><i><b>
+Hallo Klaus!!<br>
+</b></i></font>
+<font color="#FFCC00" size="3"><i><b>
+O-tanjobi omedeto gozaimasu!<br>
+</b></i></font>
+<font color="#FFCC00" size="3"><i><b>
+Happy Birthday!<br>
+</b></i></font>
+<font color="#FFCC00" size="3"><i><b>
+Herzlichen Glueckwunsch<br>
+</b></i></font>
+<font color="#FFCC00" size="3"><i><b>
+zum Geburtstag!<br>
+</b></i></font>
+<font color="#FF0000" size="3"><i><b>
+Your "old" Ex-Friends!!!<br>
+</b></i></font>
+
+
+</div>
+</td>
+</tr>
+
+</table>
+
+<!-- Sponsor +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++  -->
+<div style="position:absolute; top:630px; left:0px; z-index:3; font-family:Bookman Old Style, Times New Roman; text-align:left;">
+<a href="#" onclick="window.open('http://www.ex-tokyo.com/birthday.htm','birthday','width=800,height=500,toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,copyhistory=yes,resizable=yes')">
+<font color="#FFCC00" size="2">[click for birthday picture!]<br><br></font>
+</a>
+
+
+<font face="Arial" size=2>
+<a href="#" onclick="window.open('http://www.ex-tokyo.com/birthday.htm','birthday','width=800,height=500,toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,copyhistory=yes,resizable=yes')">
+                                <img src="tuvnew.png" align="left" width="56" height="50" border="0" hspace="3">
+                                </a></font><font color="#FFFFFF" face="Arial" size="1"><br>&nbsp;System powered by:</font><font face="Arial" size=2><br>
+                  <a class="style1" style="text-decoration: none;" href="#" onclick="window.open('http://www.ex-tokyo.com/birthday.htm','birthday','width=800,height=500,toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,copyhistory=yes,resizable=yes')">&nbsp;T&Uuml;V Rheinland Group</a></font>
+
+</div>
+
+
+</body>
+</html>

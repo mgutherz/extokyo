@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>EX German Snack Bar</title>
+<link rel="stylesheet" type="text/css" href="/style.css" />
+<script src="/common.js"></script>
+<script language="javascript">
+// schedule first update at 12:01 (server time)
+setTimeout('updateBirthdays();', <?=(1000 * (strtotime('tomorrow') - time() + 60))?>);
+
+function updateBirthdays() {
+	updateAjax('birthdays', 'birthdayMenu.php');
+	// schedule next update in 1 day (client keeps track of time)
+	setTimeout('updateBirthdays();', 86400000);
+}
+</script>
+</head>
+<body<?if (isset($onload)) echo " onload=\"$onload\"";?><?if (isset($onunload)) echo " onunload=\"$onunload\"";?>>
+<table style="height: 100%;"><tr>
+
+<td style="width: 250px; vertical-align:top;"><!--left side -->
+
+<table class="flag smallflag" style="margin: 10px 0px 10px 10px;">
+<tr><td>EX</td></tr>
+<tr><td>German Snack</td></tr>
+<tr><td>Bar</td></tr>
+</table>
+
+<table class="menu-v" style="margin: 40px 0px 20px 10px;">
+<?
+foreach ($MENU as $name => $page) {
+	if ($page == substr($_SERVER['SCRIPT_NAME'], 0, strlen($page)))
+		echo "<tr><td id=\"selected\">$name</td></tr>";
+	else
+		echo "<tr><td onClick=\"document.location='$page';\">$name</td></tr>";
+}
+?>
+</table>
+
+<div id="birthdays" style="margin-top: 40px; height: 200px;"><?include(BASEDIR .'/birthdayMenu.php');?></div>
+
+<table style="position: absolute; bottom: 10px;">
+<tr><td style="vertical-align: bottom"><a href="http://www.tuv.com/en/japan/home.jsp"><img src="/tuvnew.png" /></a></td><td style="vertical-align: bottom; padding-bottom: 3px; white-space: nowrap; font-size: 10px;"><a href="http://www.tuv.com/en/japan/home.jsp">Sponsored by<br />T&Uuml;V Rheinland Group</a></td></tr>
+</table>
+
+</td><!-- left side -->
+<td style="width: 100%; height: 100%;"><!-- right side -->

@@ -1,0 +1,266 @@
+<html>
+<head>
+<title>
+Anthony C Howe - SnertCam Applet
+</title>
+<meta name="keywords" content="Anthony C Howe Snert">
+<meta name="description" content="">
+<style>
+<!--
+a { font-weight: bold }
+-->
+</style>
+</head>
+
+<body background="../../Img/Bg/wave1.jpg" bgcolor="#ffffff" text="#000000" link="#0000ff" vlink="#000080" alink="#ff00ff" background="?">
+<!-- MARGINS -->
+<table cellpadding=0 cellspacing=0 border=0 width=100%>
+<tr>
+	<td rowspan=2>
+		<img alt="" src="../../Img/Item/mrpixel.gif" width=100 height=1>
+	</td><td>
+		<img alt="Snert . Com" src="../../Img/Logos/sun-logo.jpg" width=110 height=110>
+	</td><td align=left>
+		<b><font size=+3 color="#3099ff">SnertCam Applet 1.3</font></b>
+		<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<font size=3>from</font>&nbsp;&nbsp;
+		<b><font size=+1>Snert . Com</font></b>
+	</td><td>
+		<img alt="" src="../../Img/Item/mrpixel.gif" width=130 height=1>
+	</td>
+</tr><tr>
+	<td colspan=3>
+
+<!-- PAGE BODY -->
+
+<p>
+
+<!-- SnertCam.java
+  --
+  -- Copyright 1998, 1999 by Anthony Howe.  All rights reserved.
+  --
+  -- The applet width and height should be set the size of image.
+  --
+  -- param :
+  --	source		.gif or .jpg image file name (required)
+  --	interval	refresh period in seconds (default 30 seconds)
+  --	bgcolor		background colour as RGB hex code (default #FFFFFF)
+  --	fgcolor		foreground colour as RGB hex code (default #000000)
+  --	font		Serif, SansSerif, Monospaced, (default) Dialog, DialogInput
+  --	fontsize	font size (default 12)
+  --	fontstyle	b = bold, i = italic, p = plain (eg. "bi") (default p)
+  --	showbar		true = show a progress bar (default), false = not
+  --	showtext	true = show counter (default), false = not
+  --	brightness	percentage brightness when placement is top or bottom
+  --	placement	place bar/text top, bottom, above, or below photo
+  -->
+<table align=right cellpadding=1 cellspacing=10 border=0>
+<tr>
+	<th colspan=2>
+
+<table bgcolor="#000000" cellpadding=0 cellspacing=0 border=0>
+<tr>
+	<th>
+<!-- applet name="cam" code="SnertCam.class" width=185 height=170 -->
+<applet name="cam" archive="SnertCam14.jar" code="SnertCam.class" width=185 height=170>
+<param name="source" value="snap.jpg">
+<param name="interval" value="30">
+<param name="showbar" value="true">
+<param name="showtext" value="true">
+<param name="placement" value="below">
+<param name="brightness" value="140">
+<param name="bgcolor" value="#ffffff">
+<param name="fgcolor" value="#0000ff">
+<param name="fontsize" value="14">
+<param name="fontstyle" value="b">
+<param name="border" value="3">
+<param name="bordercolor" value="#ff0000">
+</applet></th>
+</tr>
+	<td>
+</table>
+<!img src="http://online.mirabilis.com/scripts/online.dll?icq=7116561&img=2">
+	</th>
+</tr><tr valign=top>
+	<form name="opt">
+
+	<td>
+<script language="Javascript1.1">
+function getRadio(group) {
+	for (i = 0; i < group.length; ++i) {
+		if (group[i].checked)
+			return group[i].value;
+	}
+
+	return null;
+}
+
+function modPlacement() {
+	document.cam.setPlacement(getRadio(document.opt.placement));
+}
+
+function modInterval() {
+	var i = parseInt(document.opt.interval.value);
+	document.cam.setInterval(i);
+}
+
+function modBrightness() {
+	var i = parseInt(document.opt.brightness.value);
+	document.cam.setBrightness(i);
+}
+
+function modBar() {
+	document.cam.setShowBar(document.opt.bar.checked);
+}
+
+function modText() {
+	document.cam.setShowText(document.opt.text.checked);
+}
+</script>
+
+		<font size=-1>
+		<input type=radio name="placement" value="above" onClick="modPlacement()">
+		Above<br>
+		<input type=radio name="placement" value="top" onClick="modPlacement()">
+		Top<br>
+		<input type=radio name="placement" value="bottom" onClick="modPlacement()">
+		Bottom<br>
+		<input type=radio name="placement" value="below" onClick="modPlacement()" checked>
+		Below <br>
+		</font>
+	</td><td>
+		<font size=-1>
+		<input type=checkbox name="bar" value="true" onClick="modBar()" checked>
+		Show Bar <br>
+		<input type=checkbox name="text" value="true" onClick="modText()" checked>
+		Show Text <br>
+		<input type=text size=4 name="interval" value="30" onChange="modInterval()">
+		Interval <br>
+		<input type=text size=4 name="brightness" value="150" onChange="modBrightness()">
+		Brightness <br>
+		</font>
+	</td>
+
+	</form>
+</tr><tr>
+	<th colspan=2>
+		<a href="SnertCam13.zip">Download SnertCam13.zip</a>
+	</th>
+</tr>
+</table>
+
+<h3>Description</h3>
+Fetch and display a picture every N seconds avoiding web browser
+caching.  This applet can be used in conjuction with web camara
+software such as
+<p>
+<center>
+<A HREF="http://www.kolban.com/webcam32/">
+<IMG alt="Webcam32 Software" SRC="../../Img/Logos/wc32_ani.gif" HEIGHT=54 WIDTH=94 vspace=3 border=0></A>
+</center>
+<p>
+
+<h3>Param</h3>
+
+<dl>
+<dt><code>source</code>
+<dd>.gif or .jpg image file name loaded from the
+same location as the applet. (required)
+<p>
+
+<dt><code>interval</code>
+<dd>Refresh period in seconds (default 30 seconds).
+<p>
+
+<dt><code>bgcolor</code>
+<dd>Background colour as an RGB hex code (default #FFFFFF).
+<p>
+
+<dt><code>fgcolor</code>
+<dd>Text foreground colour as an RGB hex code (default #000000).
+<p>
+
+<dt><code>font</code>
+<dd>Text font name : Serif, SansSerif, Monospaced,
+Dialog (default), DialogInput
+<p>
+
+<dt><code>fontsize</code>
+<dd>Font size (default 12).
+<p>
+
+<dt><code>fontstyle</code>
+<dd>The text font style : b = bold, i = italic,
+p = plain (eg. "bi") (default p)
+<p>
+
+<dt><code>showbar</code>
+<dd>true = show a progress bar (default), false = don't bother
+<p>
+
+<dt><code>showtext</code>
+<dd>true = show counter (default), false = don't bother
+<p>
+
+<dt><code>placement</code>
+<dd>Place of progress bar and/or text should be top, bottom, above,
+or below (default) the photo.
+<p>
+
+<dt><code>brightness</code>
+<dd>The percentage brightness of the progress bar when
+<code>placement</code> is either top or bottom (default 120).
+</dl>
+
+<p>
+
+<center>
+<b>
+<script language="javascript">
+<!--
+var cam_win;
+var cam_path = '/Software/Cam/cam.html';
+
+function cam() {
+	cam_win=window.open(
+		cam_path, "snert",
+		"resizable=yes,toolbar=0,location=0,directories=0,status=0,menubar=0,scrollbars=0,copyhistory=0,width=190,height=180"
+	);
+	cam_win.location.href = cam_path;
+}
+// -->
+</script>
+
+| <A href="../../index.shtml">Welcome</A>
+| <A href="../../Guestbook/index.shtml">Guest Book</A>
+| <A href="../../Links/index.shtml">Links</A>
+| <A href="../../Software/index.html">Software</A>
+| <A href="javascript:cam()">Snert Cam</A>
+|
+</b>
+</center>
+
+<br>
+<br>
+<!-- copyright -->
+<p>
+<center>
+<font size=2><i><nobr>Copyright 1996, 1999 by
+<a href="mailto:achowe@snert.com">
+Anthony Howe </a>.</nobr>
+<nobr>All rights reserved.</nobr></i></font>
+</center>
+<!--end copyright-->
+
+<center>
+<p>
+<font size=1>
+<!--#include virtual="/WIL/counter.pl/Software/Cam/index.cnt" -->
+exhibitionists since who knows when.</font>
+</center>
+
+	</td>
+</tr>
+</table>
+</body>
+</html>

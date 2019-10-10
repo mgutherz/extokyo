@@ -1,0 +1,67 @@
+<script language="javascript" type="text/javascript">
+var barsize = 160; // progressbar size
+var barpos = barsize; // current progressbar position
+var progressBar; // progressbar
+var datetime;
+var dayNames = new Array('Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday');
+var monthNames = new Array('January','February','March','April','May','June','July','August','September','October','November','December');
+var updatePBInterval = 250; // in miliseconds
+var updateStatsInterval = 60000; // in miliseconds
+var seq = 0;
+
+function updateProgressBar() {
+	if (--barpos < 0) {
+		barpos = barsize;
+		document.getElementById('cameraImage').src='/tmp/cam.jpg?seq='+(++seq)+'&rnd='+Math.random();
+	}
+	
+	var tmp='<table cellpadding="0" cellspacing="0" border="0"><tr>';
+	for (var i = 0; i<barsize; i++) {
+		tmp+='<td id="progressBar'+i+'" class="'+((i<barpos)?'bar1':'bar2')+'">&nbsp;</td>';
+	}
+	progressBar.innerHTML=tmp+'</tr></table>';
+}
+
+function updateDateTime() {
+	var date = new Date();
+ 	datetime.innerHTML = dayNames[date.getDay()]+' '+date.getDate()+'. '+monthNames[date.getMonth()]+' '+date.getFullYear()+' '+date.getHours()+':'+(date.getMinutes()<10?'0':'')+date.getMinutes()+':'+(date.getSeconds()<10?'0':'')+date.getSeconds();
+}
+
+function webcam_init() {
+	progressBar = document.getElementById('progressBar');
+	datetime = document.getElementById('datetime');
+	updateDateTime();
+	updateAjax('stats_day','/tmp/stats_day.txt');
+	updateAjax('stats_total','/tmp/stats_total.txt');
+	setInterval("updateAjax('stats_day','/tmp/stats_day.txt');", updateStatsInterval);
+	setInterval("updateAjax('stats_total','/tmp/stats_total.txt');", updateStatsInterval);
+	setInterval(updateProgressBar, updatePBInterval);
+	setInterval(updateDateTime, 1000);
+}
+</script>
+
+<div style="top: 0; bottom: 0; text-align: center; width: 100%;">
+<div style="top: 0; bottom: 0; text-align: center; display: inline-block;">
+<div id="datetime" class="stats" align="center"></div>
+<img id="cameraImage" src="/tmp/cam.jpg" align="center" />
+<div id="progressBar" align="center"></div>
+<div class="stats" align="center">
+This site has been accessed <div id="stats_total" class="highlight"></div> times since January 2009, <br />
+<div id="stats_day" class="highlight"></div> of these within today. <a href="/stats/" target="_new">(Click here for statistics)</a>
+</div>
+
+<? if (isInternal()) {
+$camera = (isInternal()?'http://camera':'http://ex.ex.mizrahi.com.ve');
+?>
+<script language="javascript">
+var cam = new Image;
+function camPos(x) {
+	cam.src='<?=$camera?>/ViewerFrame?PresetOperation=Load&Data='+x;
+}
+</script>
+<hr />
+<table id="camPos"><tr><td><a href="" onclick="camPos(1);">1</a></td><td><a href="" onclick="camPos(2);">2</a></td><td><a href="" onclick="camPos(3);">3</a></td><td><a href="" onclick="camPos(4);">4</a></td><td><a href="" onclick="camPos(5);">5</a></td><td><a href="" onclick="camPos(6);">6</a></td></tr></table>
+<div id="stats" class="stats">Configure: <a href="admin/birthdays/">birthdays</a> / <a href="admin/camera/">camera</a> / <a href="admin/stats/">statistics</a></div>
+<? } ?>
+</div>
+</div>

@@ -1,0 +1,2 @@
+<!-- This creates a new CSS namespace to integrate the styles of the guestbook without collissions -->
+<div id="gb_wrap">

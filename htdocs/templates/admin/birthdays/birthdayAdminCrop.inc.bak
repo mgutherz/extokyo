@@ -1,0 +1,84 @@
+<?
+$name = $_REQUEST['name'];
+$month = $_REQUEST['month'];
+$day = $_REQUEST['day'];
+
+$ul_filename = pathinfo($_FILES['picture']['name']);
+$tmp_filename = pathinfo($_FILES['picture']['tmp_name']);
+
+if ($_FILES['picture']['error'] !=0 ) {
+	die("Error uploading image: ".$_FILES['picture']['error']." (click Back to try again)");
+}
+
+if (!preg_match('/^\w+[\s*\w]?\w+$/', $name)) {
+	die("Invalid name: '$name' (click Back to fix it)");
+}
+
+# find an unused filename
+$i=0;
+do {
+	$filename = sprintf("%02d%02d-%s%s.%s", $month, $day, ucwords($name), $i==0?'':$i, strtolower($ul_filename['extension']));
+	$i++;
+} while (@lstat($BIRTHDAYDIR.$filename));
+
+if (!move_uploaded_file($_FILES['picture']['tmp_name'], $BIRTHDAYDIR . $filename)) {
+	die("Error writing to $BIRTHDAYDIR$filename");
+}
+
+if ($info = getimagesize($BIRTHDAYDIR . $filename)) {
+	# find size of initial crop box
+	if ($info[0] >= $IMGWIDTH && $info[1] >= $IMGHEIGHT) {
+		$dstw = $IMGWIDTH;
+		$dsth = $IMGHEIGHT;
+	} else {
+		if ($info[0] >= $IMGWIDTH) {
+			$dstw = $info[0] * $IMGHEIGHT / $IMGWIDTH;
+			$dsth = $info[1];
+		} else {
+			$dsth = $info[1] * $IMGWIDTH / $IMGHEIGHT;
+			$dstw = $info[0];
+		}
+	}
+
+	$x1 = intval(($info[0] - $dstw)/ 2);
+	$x2 = $x1 + $dstw;
+	$y1 = intval(($info[1] - $dsth)/ 2);
+	$y2 = $y1 + $dsth;
+
+}
+
+?>
+<script src="cropper/lib/prototype.js" language="javascript" type="text/javascript"></script>
+<script src="cropper/lib/scriptaculous.js?load=builder,dragdrop" language="javascript" type="text/javascript"></script>
+<script src="cropper/cropper.js" language="javascript" type="text/javascript"></script>
+
+<p align="center"><img src="<?=$BIRTHDAYURI?><?=$filename?>" id="image" /></p>
+
+<script language="javascript" type="text/javascript">
+function onEndCrop(coords, dimension) {
+	var form = document.getElementById('cropForm');
+	form.x.value=coords.x1;
+	form.y.value=coords.y1;
+	form.w.value=dimension.width;
+	form.h.value=dimension.height;
+}
+
+<?
+if (isset($x1))
+	echo "new Cropper.Img('image', { displayOnInit: true, onEndCrop: onEndCrop, onloadCoords: { x1: $x1, y1: $y1, x2: $x2, y2: $y2 } } );\n";
+else
+	echo "new Cropper.Img('image', { onEndCrop: onEndCrop } );\n";
+?>
+</script>
+
+<form id="cropForm" method="POST" action="<?=$_SERVER['SCRIPT_NAME']?>?act=newdone">
+<input type="hidden" name="month" value="<?=$month?>" />
+<input type="hidden" name="day" value="<?=$day?>" />
+<input type="hidden" name="name" value="<?=$name?>" />
+<input type="hidden" name="filename" value="<?=$filename?>" />
+<input type="hidden" name="x" value="" />
+<input type="hidden" name="y" value="" />
+<input type="hidden" name="w" value="" />
+<input type="hidden" name="h" value="" />
+<input type="button" value="Cancel" onClick="window.location.href='birthdayAdmin.php';" />&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" value="Finish" />
+</form>

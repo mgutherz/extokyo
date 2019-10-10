@@ -1,0 +1,149 @@
+<script language="javascript" type="text/javascript">
+var barsize = 160; // progressbar size
+var barpos = barsize; // current progressbar position
+var progressBar; // progressbar
+var datetime;
+var dayNames = new Array('Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday');
+var monthNames = new Array('January','February','March','April','May','June','July','August','September','October','November','December');
+var updatePBInterval = 75; // in miliseconds
+var updateStatsInterval = 60000; // in miliseconds
+var cam = new Image;
+var seq = 0;
+
+function updateProgressBar() {
+	if (--barpos < 0) {
+		barpos = barsize;
+		document.getElementById('cameraImage').src='/tmp/cam.jpg?seq='+(++seq)+'&rnd='+Math.random();
+	}
+	
+	var tmp='<table cellpadding="0" cellspacing="0" border="0"><tr>';
+	for (var i = 0; i<barsize; i++) {
+		tmp+='<td id="progressBar'+i+'" class="'+((i<barpos)?'bar1':'bar2')+'">&nbsp;</td>';
+	}
+	progressBar.innerHTML=tmp+'</tr></table>';
+}
+
+function updateDateTime() {
+	var date = new Date();
+ 	datetime.innerHTML = dayNames[date.getDay()]+' '+date.getDate()+'. '+monthNames[date.getMonth()]+' '+date.getFullYear()+' '+date.getHours()+':'+(date.getMinutes()<10?'0':'')+date.getMinutes()+':'+(date.getSeconds()<10?'0':'')+date.getSeconds();
+}
+
+function webcam_init() {
+	progressBar = document.getElementById('progressBar');
+	datetime = document.getElementById('datetime');
+	updateDateTime();
+	updateAjax('acc_day','/acc_day.txt');
+	updateAjax('acc_total','/acc_total.txt');
+	setInterval("updateAjax('acc_day','/acc_day.txt');", updateStatsInterval);
+	setInterval("updateAjax('acc_total','/acc_total.txt');", updateStatsInterval);
+	setInterval(updateProgressBar, updatePBInterval);
+	setInterval(updateDateTime, 1000);
+}
+</script>
+
+<div style="top: 0; bottom: 0; text-align: center;">
+<div id="datetime" class="stats" align="center"></div>
+<img id="cameraImage" src="/tmp/cam.jpg" align="center" />
+<div id="progressBar" align="center"></div>
+<div class="stats" align="center">
+This site has been accessed <div id="acc_total" class="highlight"></div> times since August 2004, <br />
+<div id="acc_day" class="highlight"></div> of these within today. <a href="http://www.ex-tokyo.com/countries.html" target="_new">(Click here for statistics)</a>
+
+<? if (isInternal()) { ?>
+Internal controls:
+<div id="controls" align="center"></div>
+<div id="stats" class="stats">Configure: <a href="admin/camera/">camera</a> / <a href="admin/birthdays/">birthdays</a></div>
+<script language="javascript">
+var positions; // array of positions, evalled() from positions.txt
+var defaultPosition = 0; // default initial position
+var pos = defaultPosition; // current position
+var cam = new Image;
+var seq = 0;
+
+// set a defined position
+function setPosition(newpos) {
+	var xmlHttp;
+	try {
+		// Firefox, Opera 8.0+, Safari
+		xmlHttp=new XMLHttpRequest();
+	} catch (e) {
+		// Internet Explorer
+		try {
+			xmlHttp=new ActiveXObject('Msxml2.XMLHTTP');
+		} catch (e) {
+			try {
+				xmlHttp=new ActiveXObject('Microsoft.XMLHTTP');
+			} catch (e) {
+				alert('Your browser is not supported');
+				return false;
+			}
+		}
+	}
+	xmlHttp.onreadystatechange=function() {
+		if(xmlHttp.readyState==4) {
+			if (xmlHttp.status == 200) {
+				document.getElementById('positionButton'+pos).setAttribute('class', 'button');
+				document.getElementById('positionButton'+pos).setAttribute('className', 'button');
+				pos=newpos;
+				document.getElementById('positionButton'+pos).setAttribute('class', 'selectedButton');
+				document.getElementById('positionButton'+pos).setAttribute('className', 'selectedButton');
+			} else {
+				// alert('Error changing to position '+newpos+'. Status: '+xmlHttp.statusText);
+			}
+		}
+	}
+	xmlHttp.open('GET', 'http://camera/nphControlCamera?seq='+(++seq)+'&rnd='+Math.random()+'&Direction=Preset&PresetOperation=Move&Data='+positions[pos][0]+'&Mode=Motion', true);
+	xmlHttp.send(null);
+}
+
+function renderControls() {
+	var tmp = '<table cellpadding="4"><tr>';
+	for (var i=0; i<positions.length; i++) {
+		tmp += '<td><input id="positionButton'+i+'" class="button" type="button" onClick="setPosition('+i+');" value="'+positions[i][1]+'" /></td>';
+	}
+	tmp+='</tr></table>';
+	document.getElementById('controls').innerHTML = tmp;
+}
+
+
+function loadServerPositions() {
+	var xmlHttp;
+	try {
+		// Firefox, Opera 8.0+, Safari
+		xmlHttp=new XMLHttpRequest();
+	} catch (e) {
+		// Internet Explorer
+		try {
+			xmlHttp=new ActiveXObject('Msxml2.XMLHTTP');
+		} catch (e) {
+			try {
+				xmlHttp=new ActiveXObject('Microsoft.XMLHTTP');
+			} catch (e) {
+				alert('Your browser is not supported');
+				return false;
+			}
+		}
+	}
+	xmlHttp.onreadystatechange=function() {
+		if(xmlHttp.readyState==4) {
+			if (xmlHttp.status == 200) {
+				eval(xmlHttp.responseText);
+			} else {
+				alert('Error loading positions. Status: '+xmlHttp.status);
+			}
+			renderControls();
+			// don't set the initial position
+			// setPosition(pos);
+		}
+	}
+	xmlHttp.open('GET', 'positions.txt?'+(++seq)+'&rnd='+Math.random(), true);
+	xmlHttp.send(null);
+}
+
+loadServerPositions();
+
+</script>
+
+<? } ?>
+</div>
+</div>

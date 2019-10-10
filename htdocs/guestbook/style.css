@@ -1,0 +1,74 @@
+/* This stylesheet was modified by Alan to add the gb_wrap selector. It is a <div> wrapper declared in header.txt */
+
+#gb_wrap body, #gb_wrap td {
+	color : #FF0000;
+	background-color: Black; /* NEW IN 1.5 */
+	font-family : Verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	text-align: left; /* NEW IN 1.5 */
+}
+
+#gb_wrap td.upper {
+	color : #FFCC00;
+	background : #FF0000;
+	font-family : Verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+}
+
+#gb_wrap .smaller {/* CHANGED IN 1.5 */
+	font-size: 10px;
+}
+
+#gb_wrap table.entries {
+	color : Black;
+	font-family : Verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	BORDER-RIGHT: #FF0000 1px solid;
+	BORDER-LEFT: #FF0000 1px solid;
+	BORDER-TOP: #FF0000 1px solid;
+	BORDER-BOTTOM: #FF0000 1px solid;
+}
+
+#gb_wrap a {
+	color : #FFCC00;
+	text-decoration : underline;
+}
+
+#gb_wrap a:hover {
+	color : Red;
+	text-decoration : none;
+}
+
+#gb_wrap a.smaller {
+	font-size: 10px;
+	color : #FFCC00;
+	text-decoration : underline;
+}
+
+#gb_wrap a.smaller:hover {
+	font-size: 10px;
+	color : Red;
+	text-decoration : none;
+}
+
+#gb_wrap input {
+	font-size: 11px;
+	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+	color:#000000;
+	background-color:#FFFFFF;
+}
+
+#gb_wrap hr {
+	color: #B8CFE7;
+	height: 1px;
+}
+
+/* EVERYTHING BELOW ADDED IN 1.5 */
+#gb_wrap div.centered {
+	text-align: center;
+}
+
+#gb_wrap div.centered table {
+	margin: 0 auto; 
+	text-align: left;
+}

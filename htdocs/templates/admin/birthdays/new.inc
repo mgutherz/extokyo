@@ -1,0 +1,58 @@
+<script language="javascript">
+var monthDays = new Array(31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
+function setDays() {
+	var monsel = document.getElementById('monthSelector');
+	var daysel = document.getElementById('daySelector');
+	// add days for this month
+	for (i=daysel.options.length+1; i<=monthDays[monsel.selectedIndex]; i++) {
+		daysel.options[daysel.options.length] = new Option(i, i);
+	}
+	// remove extra days for this month
+	for (i=daysel.options.length-1; i>=monthDays[monsel.selectedIndex]; i--) {
+		daysel.remove(i);
+	}
+}
+
+function checkForm() {
+	if (document.getElementById('name').value=='') {
+		alert('Please type in the name of the person');
+		document.getElementById('name').focus();
+		return false;
+	}
+	if (document.getElementById('picture').value=='') {
+		alert('Please select the picture of the person');
+		document.getElementById('picture').focus();
+		return false;
+	}
+	return true;
+}
+</script>
+
+<div style="top: 0; bottom: 0; text-align: center;">
+
+<form name="newBirthday" method="POST" enctype="multipart/form-data" action="<?=$_SERVER['SCRIPT_NAME']?>?act=crop" onSubmit="return checkForm();">
+<table class="controls">
+<tr><td align="right">Name: </td><td align="left"><input type="text" name="name" id="name" /></td></tr>
+<tr><td align="right">Birthday: </td><td align="left">
+<select name="day" id="daySelector"></select>
+<select name="month" id="monthSelector" onChange="setDays();">
+<?
+# use current month as fallback
+$month = array_key_exists('month',$_REQUEST) ? $_REQUEST['month'] : date('m');
+
+for ($i=1; $i<=12; $i++)
+	echo sprintf('<option value="%d"%s>%s</option>', $i, ($month==$i)?' selected="true"':'', date('F', mktime(1, 1, 1, $i, 1)));
+
+
+?>
+</select>
+<script language="javascript">
+setDays();
+</script>
+
+</td></tr>
+<tr><td>Picture: </td><td><input name="picture" id="picture" type="file" /></td></tr>
+<tr><td colspan="2"><input type="button" value="Cancel" onClick="window.location.href='<?=$_SERVER['SCRIPT_NAME']?>?month=<?=$month?>';" />&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" value="Next" /></td></tr>
+</table>
+</form>
+</div>

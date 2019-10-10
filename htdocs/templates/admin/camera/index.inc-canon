@@ -1,0 +1,230 @@
+<?
+$camera = (isInternal()?'http://camera':'http://ex.ex.mizrahi.com.ve');
+?>
+<script language="javascript">
+<!--
+// x, y, z, b
+var positions = new Array();
+var pos; // current position
+var incr = [50, 20, 100, 1];
+var maxpos = [[-32768,32767],[-32768,32767],[0,4100],[0,1]];
+var img = new Image;
+var seq = 0;
+
+function move(act, opr) {
+	var tmp;
+	eval('tmp = pos[act]'+opr+'incr[act];');
+	if (act == 3) {
+		tmp=Math.abs(tmp);
+		document.getElementById('backlight').src='backlight'+tmp+'.png';
+	}
+	if (tmp >= maxpos[act][0] && tmp <= maxpos[act][1]) {
+		pos[act] = tmp;
+		img.src='<?=$camera?>/-wvhttp-01-/still.jpg?seq='+(++seq)+'&rnd='+Math.random()+'&pan='+pos[0]+'&tilt='+pos[1]+'&zoom='+pos[2]+'&b='+pos[3];
+	}
+}
+
+// load a defined position
+function loadPosition(newpos) {
+	pos = new Array();
+	for (var i=0;i<positions[newpos].length;i++) {
+		pos[i] = positions[newpos][i];
+	}
+	if (pos[3] === undefined)
+		document.getElementById('backlight').src='backlight0.png';
+	else
+		document.getElementById('backlight').src='backlight'+pos[3]+'.png';
+	img.src='<?=$camera?>/-wvhttp-01-/still.jpg?seq='+(++seq)+'&rnd='+Math.random()+'&pan='+pos[0]+'&tilt='+pos[1]+'&z='+pos[2]+'&b='+pos[3];
+	// workaround for a zooming bug in the camera
+	move(2,'-');
+	move(2,'+');
+}
+// select a new saved position
+function changeSelectedPosition() {
+	var positionSelector = document.getElementById('positionSelector');
+	loadPosition(positionSelector.selectedIndex);
+}
+
+function saveAsNewPosition() {
+	var positionSelector = document.getElementById('positionSelector');
+	var newname;
+	var newpos;
+	if (newname = prompt("New position's name: ")) {
+		pos[4] = newname;
+		positionSelector.options[positionSelector.options.length] = new Option(newname, '');
+		newpos = new Array();
+		for (var i=0;i<pos.length;i++) {
+			newpos[i] = pos[i];
+		}
+		positions.push(newpos);
+		saveServerPositions();
+		positionSelector.selectedIndex = positionSelector.options.length - 1;
+	}
+}
+
+function savePosition() {
+	var positionSelector = document.getElementById('positionSelector');
+	var newpos;
+	if (confirm('Overwrite values for selected position? ('+pos[4]+')')) {
+		for (var i=0;i<positions[positionSelector.selectedIndex].length;i++) {
+			positions[positionSelector.selectedIndex][i] = pos[i];
+		}
+		saveServerPositions();
+	}
+}
+
+function renamePosition() {
+	var positionSelector = document.getElementById('positionSelector');
+	var newname;
+	if (newname = prompt('Rename position "'+pos[4]+'" to:')) {
+		pos[4] = newname;
+		positions[positionSelector.selectedIndex][4] = newname;
+		saveServerPositions();
+		positionSelector.options[positionSelector.selectedIndex].text = newname;
+	}
+}
+
+function deletePosition() {
+	var positionSelector = document.getElementById('positionSelector');
+	var newpos;
+	if (confirm('Do you really want to delete this position? ('+pos[4]+')')) {
+		newpos = positionSelector.selectedIndex;
+		positions.splice(positionSelector.selectedIndex, 1);
+		positionSelector.remove(positionSelector.selectedIndex);
+		if (newpos > positionSelector.options.length - 1) {
+			newpos--;
+		}
+		saveServerPositions();
+		positionSelector.selectedIndex = newpos;
+		loadPosition(newpos);
+	}
+}
+
+function loadServerPositions() {
+	var xmlHttp;
+	try {
+		// Firefox, Opera 8.0+, Safari
+		xmlHttp=new XMLHttpRequest();
+	} catch (e) {
+		// Internet Explorer
+		try {
+			xmlHttp=new ActiveXObject('Msxml2.XMLHTTP');
+		} catch (e) {
+			try {
+				xmlHttp=new ActiveXObject('Microsoft.XMLHTTP');
+			} catch (e) {
+				alert('Your browser is not supported');
+				return false;
+			}
+		}
+	}
+	xmlHttp.onreadystatechange=function() {
+		if(xmlHttp.readyState==4) {
+			if (xmlHttp.status == 200) {
+				eval(xmlHttp.responseText);
+			} else {
+				alert('Error loading positions. Status: '+xmlHttp.status);
+			}
+			// no positions loaded or defined
+			if (positions.length == 0) {
+				positions.push(new Array(0,0,4100,0,'Default'));
+			}
+			var positionSelector = document.getElementById('positionSelector');
+			// populate position selector
+			for (var i=0; i<positions.length; i++) {
+				positionSelector.options[positionSelector.options.length] = new Option(positions[i][4], '');
+			}
+			// select first position, if defined
+			if (positions.length >= 0) {
+				positionSelector.selectedIndex = 0;
+				loadPosition(0);
+			}
+			
+		}
+	}
+	xmlHttp.open('GET', '/positions.txt?'+(++seq)+'&rnd='+Math.random(), true);
+	xmlHttp.send(null);
+}
+
+function saveServerPositions() {
+	var xmlHttp;
+	try {
+		// Firefox, Opera 8.0+, Safari
+		xmlHttp=new XMLHttpRequest();
+	} catch (e) {
+		// Internet Explorer
+		try {
+			xmlHttp=new ActiveXObject('Msxml2.XMLHTTP');
+		} catch (e) {
+			try {
+				xmlHttp=new ActiveXObject('Microsoft.XMLHTTP');
+			} catch (e) {
+				alert('Your browser is not supported');
+				return false;
+			}
+		}
+	}
+	var savepos = new Array();
+	for (var i = 0; i < positions.length; i++) {
+		savepos.push('pos'+i+'='+positions[i].slice(0,4).join(',')+','+encodeURIComponent(positions[i][4]));
+	}
+	xmlHttp.open('GET', 'savePositions.php?'+savepos.join('&'), false);
+	xmlHttp.send(null);
+	if(xmlHttp.readyState==4) {
+		if (xmlHttp.status == 200) {
+			var error;
+			if (error = xmlHttp.getResponseHeader('x-error')) {
+				alert('Error saving positions permanently: '+error);
+			}
+		} else {
+			alert('Error saving positions permanently: '+xmlhttp.statusText);
+		}
+	}
+}
+
+//-->
+</script>
+
+<div align="center">
+<table class="config" cellspacing="10" cellpadding="0" border="1">
+<tr><td colspan="2" align="center">
+<applet archive="LiveApplet.zip" codebase="http://<?=$camera?>:80/-wvdoc-01-/LiveApplet/" code="LiveApplet.class" width="320" height="240">
+<param name="url" value="http://<?=$camera?>:80/" />
+<param name="cabbase" value="LiveApplet.cab" />
+<param name="capture_size" value="320x240" />
+<param name="video_width" value="320" />
+<param name="controller_style" value="none" />
+<param name="connect_msg" value="" />
+</applet>
+</td></tr>
+<tr><td valign="top" align="left">
+
+<table cellspacing="0" cellpadding="8" border="1">
+<tr><th colspan="2">Manage Positions</th></tr>
+<tr><td colspan="2">
+<table cellspacing="0" cellpadding="0"><tr><td>Selected Position:<br /><select id="positionSelector" onChange="changeSelectedPosition()" style="font-size: small;"></select></td></tr></table></td></tr>
+<tr><td align="center"><img src="saveas.png" onClick="saveAsNewPosition()" /></td><td>Save as new</td></tr>
+<tr><td align="center"><img src="save.png" onClick="savePosition()" /></td><td>Save</td></tr>
+<tr><td align="center"><img src="rename.png" onClick="renamePosition()" /></td><td>Rename</td></tr>
+<tr><td align="center"><img src="delete.png" onClick="deletePosition()" /></td><td>Delete</td></tr>
+</table>
+
+</td><td valign="top" align="right">
+
+<table cellpadding="8" cellspacing="0" border="1">
+<tr><th colspan="2">Camera Controls</th></tr>
+<tr><td style="border-right-style: none;" align="right">Move: </td><td style="border-left-style: none;">
+<table cellspacing="0" cellpadding="0" border="0">
+<tr><td></td><td><img src="up.png" onClick="move(1,'+')" /></td><td></td></tr>
+<tr><td><img src="left.png" onClick="move(0,'-')" /></td><td></td><td><img src="right.png" onClick="move(0,'+')" /></td></tr>
+<tr><td></td><td><img src="down.png" onClick="move(1,'-')" /></td><td></td><td></td></tr>
+</table>
+</td>
+<tr><td onClick="move(2,'+')" align="center"><img src="zoomout.png" onClick="move(2,'+')" /></td><td>Zoom out</td></tr>
+<tr><td onClick="move(2,'-')" align="center"><img src="zoomin.png" onClick="move(2,'-')" /></td><td>Zoom in</td></tr>
+<tr><td align="center"><img onClick="move(3,'-')" id="backlight" src="" /></td><td>Backlight</td></tr>
+</table>
+
+</td></tr>
+</table>
+</div>

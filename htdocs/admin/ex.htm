@@ -1,0 +1,203 @@
+<html>
+
+
+
+<head>
+
+<title>EX German Snack Bar</title>
+
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+
+<meta content="print button, print document, print script" name="keywords">
+
+<meta content="Microsoft FrontPage 5.0" name="GENERATOR">
+
+<style type="text/css">
+
+.style1 {color: #FFFFFF}
+
+</style>
+
+<script language="JavaScript" fptype="dynamicanimation">
+
+<!--
+
+function dynAnimation() {}
+
+function clickSwapImg() {}
+
+//-->
+
+</script>
+
+<script language="JavaScript1.2" fptype="dynamicanimation" src="animate.js">
+
+</script>
+
+<script>
+
+nereidFadeObjects = new Object();
+
+nereidFadeTimers = new Object();
+
+function nereidFade(object, destOp, rate, delta){
+
+if (!document.all)
+
+return
+
+    if (object != "[object]"){  //do this so I can take a string too
+
+        setTimeout("nereidFade("+object+","+destOp+","+rate+","+delta+")",0);
+
+        return;
+
+    }
+
+        
+
+    clearTimeout(nereidFadeTimers[object.sourceIndex]);
+
+    
+
+    diff = destOp-object.filters.alpha.opacity;
+
+    direction = 1;
+
+    if (object.filters.alpha.opacity > destOp){
+
+        direction = -1;
+
+    }
+
+    delta=Math.min(direction*diff,delta);
+
+    object.filters.alpha.opacity+=direction*delta;
+
+
+
+    if (object.filters.alpha.opacity != destOp){
+
+        nereidFadeObjects[object.sourceIndex]=object;
+
+        nereidFadeTimers[object.sourceIndex]=setTimeout("nereidFade(nereidFadeObjects["+object.sourceIndex+"],"+destOp+","+rate+","+delta+")",rate);
+
+    }
+
+}
+
+
+
+</script>
+
+</head>
+
+
+
+<body topmargin="0" leftmargin="0" marginwidth="0" marginheight="0" scroll=yes text="#FFFFFF" vLink="#FFFFFF" aLink="#FFFFFF" link="#FFFFFF" bgColor="#000000" onload="dynAnimation()">
+
+<BR><BR><BR><BR><BR>
+
+<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" width="955" height="130">
+
+  <tr>
+
+    <td width="477" height="130">&nbsp;</td>
+
+    <td width="478" height="130">
+
+      <p></p>
+
+    <div align="right">
+
+      <font color="#FFFFFF" size="4" face="Arial Black"><span>Business Hours </span></font>
+
+    </div>
+
+    <div align="right">
+
+      <font color="#FFFFFF" face="Arial Black"><span>5:00PM ~ 2:00AM </span>
+
+      </font>
+
+    </div>
+
+    <div align="right">
+
+      <font color="#FFFFFF" face="Arial Black"><span>Closed on Sundays</span></font></div>
+
+    <p></p>
+
+    </td>
+
+  </tr>
+
+</table>
+
+<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" width="955" height="450">
+
+  <tr>
+
+    <td width="230" height="409"><p align="left">
+
+      <applet code="fphover.class" codebase="./" width="150" height="30">
+
+          <param name="textcolor" value="#FFFFFF">
+
+          <param name="effect" value="glow">
+
+          <param name="url" valuetype="ref" value="ex.htm">
+
+          <param name="text" value="Home">
+
+          <param name="font" value="Helvetica">
+
+          <param name="fontstyle" value="bold">
+
+          <param name="fontsize" value="16">
+
+          <param name="color" value="#FFCC00">
+
+          <param name="hovercolor" value="#FF0000">
+
+        </applet>
+
+</p>
+
+      <p align="left">
+
+        <applet code="fphover.class" codebase="./" width="150" height="30">
+
+          <param name="textcolor" value="#FFFFFF">
+
+          <param name="effect" value="glow">
+
+          <param name="text" value="How to find us">
+
+          <param name="url" valuetype="ref" value="map.htm">
+
+          <param name="font" value="Helvetica">
+
+          <param name="fontstyle" value="bold">
+
+          <param name="fontsize" value="16">
+
+          <param name="color" value="#FF0000">
+
+          <param name="hovercolor" value="#FFCC00">
+
+        </applet>
+
+      </p>
+
+      <p align="left">
+
+        <applet code="fphover.class" codebase="./" width="150" height="30">
+
+          <param name="textcolor" value="#FFFFFF">
+
+          <param name="effect" value="glow">
+
+          <param name="font" value="Helvetica">
+
+ 
