@@ -1,3 +1,4 @@
 2019/10/11 <matt> What about the DB and Image data? <asked 2019/10/16>
 2019/10/11 <matt> What about the router and webcam? can the hardware remain? IDs and passwords? <asked 2019/10/16>
 2019/10/11 <matt> What about ex.mizhari.com.ve, will it continue, how is it used? <asked 2019/10/16>
+2019/10/17 <matt> There are references to /var/www/ex-tokyo/ tree in some places (stats, ) but those do not seem to have been included in the zip file.  Can they be sent?
